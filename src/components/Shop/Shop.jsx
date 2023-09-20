@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Product from "../Product/Product";
 import Cart from "../Cart/Cart";
+import { addToDB } from "../../utilities/fakedb2";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [addCart, setAddCart] = useState([]);
 
-  const handleAddToCart = (item) => {
-    const newCart = [...addCart, item];
+  const handleAddToCart = (product) => {
+    const newCart = [...addCart, product];
     setAddCart(newCart);
-    console.log(addCart);
+    addToDB(product.id);
   };
 
   useEffect(() => {
