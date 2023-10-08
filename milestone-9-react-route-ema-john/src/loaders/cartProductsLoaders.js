@@ -3,7 +3,7 @@ import { getShoppingCartData } from "../utilities/fakedb2";
 const cartProductsLoaders = async () => {
   const loadedProducts = await fetch("products.json");
   const products = await loadedProducts.json();
-  //   console.log(products);
+  // console.log(products);
 
   // if cart data is in fake-database, you have to use async await
   // কারণ আমি জানি না বাইরের এই ফেক-ডাটাবেজে প্রোডাক্ট আছে কি-না। তাই async await। ডাটা পাওয়া পর্যন্ত সে অপেক্ষা করবে।
@@ -11,9 +11,8 @@ const cartProductsLoaders = async () => {
 
   const storedCart = getShoppingCartData();
   const savedCart = [];
-  console.log(storedCart);
   for (const id in storedCart) {
-    const addedProduct = products.find((pd) => pd.id === id);
+    const addedProduct = products.find((p) => p.id === id);
     if (addedProduct) {
       const quantity = storedCart[id];
       addedProduct.quantity = quantity;
