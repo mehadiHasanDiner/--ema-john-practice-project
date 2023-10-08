@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Product from "../Product/Product";
 import Cart from "../Cart/Cart";
-import { addToDB, getShoppingCartData } from "../../utilities/fakedb2";
+import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
+
+import {
+  addToDB,
+  deleteShoppingCart,
+  getShoppingCartData,
+} from "../../utilities/fakedb2";
+import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [addCart, setAddCart] = useState([]);
+
+  const handleClearCartFromDb = () => {
+    setAddCart([]);
+    deleteShoppingCart();
+  };
 
   // Original way:
   // const handleAddToCart = (product) => {
@@ -81,7 +93,18 @@ const Shop = () => {
         <h4 className="text-center font-bold text-md ">
           Product Added: {addCart.length}
         </h4>
-        <Cart addCart={addCart}></Cart>
+        <Cart addCart={addCart} handleClearCartFromDb={handleClearCartFromDb}>
+          <div className="pb-4">
+            <Link to="/orders">
+              <button className="w-full btn btn-success">
+                Review Orders{" "}
+                <span className="">
+                  <ArrowRightCircleIcon className="h-6 w-6 text-white" />
+                </span>
+              </button>
+            </Link>
+          </div>
+        </Cart>
       </div>
     </div>
   );

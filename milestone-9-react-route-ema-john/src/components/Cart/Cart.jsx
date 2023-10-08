@@ -1,6 +1,7 @@
 import React from "react";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
-const Cart = ({ addCart }) => {
+const Cart = ({ addCart, handleClearCartFromDb, children }) => {
   let totalPrice = 0;
   let totalShippingCost = 0;
   let quantity = 0;
@@ -50,6 +51,19 @@ const Cart = ({ addCart }) => {
           </tr>
         </tbody>
       </table>
+      <div className="py-3 ">
+        <button
+          onClick={handleClearCartFromDb}
+          className="w-full btn btn-error"
+        >
+          Clear Cart
+          <span className="">
+            <TrashIcon className="h-6 w-6 text-white" />
+          </span>
+        </button>
+      </div>
+
+      {children}
     </div>
   );
 };
