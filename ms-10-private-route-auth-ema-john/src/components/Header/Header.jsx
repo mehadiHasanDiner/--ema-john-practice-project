@@ -23,6 +23,9 @@ const Header = () => {
           <Link className="mr-2" to="/login">
             Login
           </Link>
+          <Link className="mr-2" to="/signUp">
+            Sign Up
+          </Link>
         </div>
       </nav>
     </>
