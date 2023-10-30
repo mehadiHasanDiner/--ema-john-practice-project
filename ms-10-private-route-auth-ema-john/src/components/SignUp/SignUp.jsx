@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
 
 const SignUp = () => {
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const { createUser } = useContext(AuthContext);
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -11,13 +14,25 @@ const SignUp = () => {
     const password = form.password.value;
     const confirm = form.confirm.value;
 
+    setSuccess("");
     if (password !== confirm) {
       setError("Your password did not match");
       return;
-    } else if (password < 6) {
+    } else if (password.length < 6) {
       setError("Your password must be 6 characters long");
       return;
     }
+    createUser(email, password)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        setSuccess("User created successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.message);
+      });
+
     setError(" ");
     form.reset();
 
@@ -79,6 +94,7 @@ const SignUp = () => {
           />
         </div>
         <p className="font-bold text-red-600 text-center mb-2">{error}</p>
+        <p className="font-bold text-green-600 text-center mb-2">{success}</p>
         <div className="flex items-center justify-between">
           <button
             className="bg-purple-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
