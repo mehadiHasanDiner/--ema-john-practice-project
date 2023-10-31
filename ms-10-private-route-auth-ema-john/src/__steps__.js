@@ -14,3 +14,10 @@
  * 4. set context value
  * 5. set the provider
  * */
+
+/**
+ * HOSTING
+ * --------------
+ * One time per computer
+ * npm install -g firebase-tools
+ * */
