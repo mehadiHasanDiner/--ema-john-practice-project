@@ -5,6 +5,7 @@ import { AuthContext } from "../provider/AuthProvider";
 const Login = () => {
   const { userSignIn } = useContext(AuthContext);
   const [success, setSuccess] = useState("");
+  const [show, setShow] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,10 +64,16 @@ const Login = () => {
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
-            type="password"
+            type={show ? "text" : "password"}
             placeholder="Your Password"
             name="password"
           />
+          <p
+            className="text-black cursor-pointer"
+            onClick={() => setShow(!show)}
+          >
+            {show ? <span>Hide Password</span> : <span>Show Password</span>}
+          </p>
         </div>
         <p className="font-bold text-green-600 text-center mb-2">{success}</p>
         <div className="flex items-center justify-between">
