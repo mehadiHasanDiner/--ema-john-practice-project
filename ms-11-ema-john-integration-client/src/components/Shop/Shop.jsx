@@ -14,6 +14,26 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   const [addCart, setAddCart] = useState([]);
   const { totalProducts } = useLoaderData();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const totalPages = Math.ceil(totalProducts / itemsPerPage);
+
+  console.log(totalPages);
+
+  /**
+   * Done:1. Determine the total number of products
+   * 2. Decide on the number of items per page.
+   * */
+
+  const pageNumbers = [...Array(totalPages).keys()]; //taking index (key not value) number of items per page
+  const options = [5, 10, 20];
+  console.log(pageNumbers);
+
+  const handleSelectChange = (event) => {
+    setItemsPerPage(parseInt(event.target.value));
+    setCurrentPage(0);
+  };
 
   const handleClearCartFromDb = () => {
     setAddCart([]);
@@ -77,37 +97,64 @@ const Shop = () => {
   }, []);
 
   return (
-    <div className="flex justify-between px-16 relative">
-      {/* <h3>Total Products: {products.length}</h3> */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-3/4">
-        {products.map((product) => (
-          <Product
-            product={product}
-            key={product._id}
-            handleAddToCart={handleAddToCart}
-          ></Product>
-        ))}
-      </div>
+    <>
+      <div className="flex justify-between px-16 relative">
+        {/* <h3>Total Products: {products.length}</h3> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-3/4">
+          {products.map((product) => (
+            <Product
+              product={product}
+              key={product._id}
+              handleAddToCart={handleAddToCart}
+            ></Product>
+          ))}
+        </div>
 
-      <div className="px-4 bg-fuchsia-900 mx-4 w-1/4 leading-normal fixed top-0 right-0 mt-16">
-        <h3 className="text-center font-bold text-xl py-4">Cart Container</h3>
-        <h4 className="text-center font-bold text-md ">
-          Product Added: {addCart.length}
-        </h4>
-        <Cart addCart={addCart} handleClearCartFromDb={handleClearCartFromDb}>
-          <div className="pb-4">
-            <Link to="/orders">
-              <button className="w-full btn btn-success">
-                Review Orders{" "}
-                <span className="">
-                  <ArrowRightCircleIcon className="h-6 w-6 text-white" />
-                </span>
-              </button>
-            </Link>
-          </div>
-        </Cart>
+        <div className="px-4 bg-fuchsia-900 mx-4 w-1/4 leading-normal fixed top-0 right-0 mt-16">
+          <h3 className="text-center font-bold text-xl py-4">Cart Container</h3>
+          <h4 className="text-center font-bold text-md ">
+            Product Added: {addCart.length}
+          </h4>
+          <Cart addCart={addCart} handleClearCartFromDb={handleClearCartFromDb}>
+            <div className="pb-4">
+              <Link to="/orders">
+                <button className="w-full btn btn-success">
+                  Review Orders{" "}
+                  <span className="">
+                    <ArrowRightCircleIcon className="h-6 w-6 text-white" />
+                  </span>
+                </button>
+              </Link>
+            </div>
+          </Cart>
+        </div>
       </div>
-    </div>
+      {/* {pagination} */}
+      <div className="pagination text-center mt-10">
+        <p>
+          Current page: {currentPage} and items per page: {itemsPerPage}
+        </p>
+        {pageNumbers.map((number) => (
+          <button
+            className={
+              currentPage === number ? "btn btn-neutral" : "btn btn-primary"
+            }
+            key={number}
+            onClick={() => setCurrentPage(number)}
+          >
+            {number}
+          </button>
+        ))}
+        <select value={itemsPerPage} onChange={handleSelectChange}>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {" "}
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
+    </>
   );
 };
 
