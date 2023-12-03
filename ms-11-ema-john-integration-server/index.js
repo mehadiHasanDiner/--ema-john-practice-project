@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// emaWatson = user
+// emaWatson
 // 0HDAlT7iriU9UivP
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
