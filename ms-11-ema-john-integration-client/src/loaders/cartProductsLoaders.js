@@ -1,7 +1,20 @@
 import { getShoppingCartData } from "../utilities/fakedb2";
 
 const cartProductsLoaders = async () => {
-  const loadedProducts = await fetch("http://localhost:5000/products");
+  const storedCart = getShoppingCartData();
+  const ids = Object.keys(storedCart);
+  console.log(ids);
+
+  const loadedProducts = await fetch(
+    `http://localhost:5000/productsByIds?page=0&limit=1000000`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(ids),
+    }
+  );
   const products = await loadedProducts.json();
   // console.log(products);
 
@@ -9,7 +22,6 @@ const cartProductsLoaders = async () => {
   // কারণ আমি জানি না বাইরের এই ফেক-ডাটাবেজে প্রোডাক্ট আছে কি-না। তাই async await। ডাটা পাওয়া পর্যন্ত সে অপেক্ষা করবে।
   // নরমাল্লি আমরা useEffect ব্যবহার করি কারন আমরা জানি যে প্রোডাক্ট আছে।
 
-  const storedCart = getShoppingCartData();
   const savedCart = [];
   for (const id in storedCart) {
     const addedProduct = products.find((p) => p._id === id);

@@ -22,12 +22,14 @@ const Shop = () => {
   console.log(totalPages);
 
   /**
-   * Done:1. Determine the total number of products
-   * 2. Decide on the number of items per page.
+   * Done: 1. Determine the total number of products
+   * Done: 2. Decide on the number of items per page.
+   * Done: 3. calculate the total number of pages.
+   * Done: 4. Determine the current page:
    * */
 
   const pageNumbers = [...Array(totalPages).keys()]; //taking index (key not value) number of items per page
-  const options = [5, 10, 20];
+  const options = [8, 12, 15, 20];
   console.log(pageNumbers);
 
   const handleSelectChange = (event) => {
@@ -90,11 +92,22 @@ const Shop = () => {
     setAddCart(savedCart);
   }, [products]);
 
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/products")
+  //     .then((res) => res.json())
+  //     .then((data) => setProducts(data));
+  // }, []);
+
   useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+    async function fetchData() {
+      const response = await fetch(
+        `http://localhost:5000/products?page=${currentPage}&limit=${itemsPerPage}`
+      );
+      const data = await response.json();
+      setProducts(data);
+    }
+    fetchData();
+  }, [currentPage, itemsPerPage]);
 
   return (
     <>
