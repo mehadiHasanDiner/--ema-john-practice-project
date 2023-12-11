@@ -75,22 +75,36 @@ const Shop = () => {
 
   useEffect(() => {
     const storedCart = getShoppingCartData();
-    const savedCart = [];
-    // step 1: get id.
-    for (const id in storedCart) {
-      // step 2: get the product by using the id.
-      const addedProduct = products.find((product) => product._id === id);
-      // step 3: get the quantity of the product.
-      if (addedProduct) {
-        const quantity = storedCart[id];
-        addedProduct.quantity = quantity;
-        // step 4: add the added product to the saved cart.
-        savedCart.push(addedProduct);
-      }
-    }
-    // step 5: set the cart.
-    setAddCart(savedCart);
-  }, [products]);
+    const ids = Object.keys(storedCart);
+
+    fetch(`http://localhost:5000/productsByIds?page=0&limit=1000000`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(ids),
+    })
+      .then((res) => res.json())
+      .then((cartProducts) => {
+        const savedCart = [];
+        // step 1: get id.
+        for (const id in storedCart) {
+          // step 2: get the product by using the id.
+          const addedProduct = cartProducts.find(
+            (product) => product._id === id
+          );
+          // step 3: get the quantity of the product.
+          if (addedProduct) {
+            const quantity = storedCart[id];
+            addedProduct.quantity = quantity;
+            // step 4: add the added product to the saved cart.
+            savedCart.push(addedProduct);
+          }
+        }
+        // step 5: set the cart.
+        setAddCart(savedCart);
+      });
+  }, []);
 
   // useEffect(() => {
   //   fetch("http://localhost:5000/products")
@@ -155,7 +169,7 @@ const Shop = () => {
             key={number}
             onClick={() => setCurrentPage(number)}
           >
-            {number}
+            {number + 1}
           </button>
         ))}
         <select value={itemsPerPage} onChange={handleSelectChange}>
